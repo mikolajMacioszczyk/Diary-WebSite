@@ -17,11 +17,6 @@ namespace Diary.Data.Services.Undo
             _undoStack = new LinkedList<UndoAction>();
         }
 
-        public void Add()
-        {
-            throw new System.NotImplementedException();
-        }
-
         private void ServeRemoveUndoAction(UndoAction undo)
         {
             _entryRepository.AddOrUpdateEntryAsync(undo.Changed);
@@ -29,17 +24,25 @@ namespace Diary.Data.Services.Undo
 
         private async void ServeUpdateUndoAction(UndoAction undo)
         {
-            if (!await _entryRepository.UpdateEntryAsync(undo.Changed.Id, undo.Changed))
+            if (!(await _entryRepository.UpdateEntryAsync(undo.Changed.Id, undo.Changed)).Succeded)
             {
-                throw new Exception("Internal error. ServeUpdateUndoAction: Not existing undo");
+                throw new Exception("Internal error. ServeUpdateUndoAction: Not existing entry");
             }
         }
 
-        private void ServeAddUndoAction(UndoAction undo)
+        private async void ServeAddUndoAction(UndoAction undo)
         {
-            
+            if (!(await _entryRepository.DeleteEntryAsync(undo.Changed.Id)).Succeded)
+            {
+                throw new Exception("Internal error. ServeAddUndoAction: Not existing entry");
+            }
         }
-        
+
+        public void Add(UndoAction action)
+        {
+            _undoStack.AddFirst(action);
+        }
+
         public void Undo()
         {
             if (_undoStack.First != null)

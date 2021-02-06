@@ -23,75 +23,133 @@ namespace Diary.Data.Repositories.Entry
             return size;
         }
 
-        public async Task<IEnumerable<Lib.Entry.Entry>> GetEntriesAsync(int startIdx, int count)
+        public async Task<EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>> GetEntriesAsync(int startIdx, int count)
         {
-            return await _context.EntryItems.Skip(startIdx).Take(count).ToListAsync();
+            return new EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>()
+            {
+                Type = EntryRepositoryResultType.Get,
+                Succeded = true,
+                Data = await _context.EntryItems.Skip(startIdx).Take(count).ToListAsync(),
+            };
         }
 
-        public async Task<IEnumerable<Lib.Entry.Entry>> GetEntriesByDateBetweenAsync(DateTime dateStart, DateTime dateEnd)
+        public async Task<EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>> GetEntriesByDateBetweenAsync(DateTime dateStart, DateTime dateEnd)
         {
-            return await _context.EntryItems
-                .Where(e => e.Date >= dateStart && e.Date <= dateEnd)
-                .ToListAsync();
+            return new EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>()
+                {
+                    Type = EntryRepositoryResultType.Get,
+                    Succeded = true,
+                    Data = await _context.EntryItems
+                        .Where(e => e.Date >= dateStart && e.Date <= dateEnd)
+                        .ToListAsync()
+                };
         }
 
-        public async Task<IEnumerable<Lib.Entry.Entry>> GetEntriesByDateBetweenAsync(DateTime dateStart, DateTime dateEnd, int startIdx, int count)
+        public async Task<EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>> GetEntriesByDateBetweenAsync(DateTime dateStart, DateTime dateEnd, int startIdx, int count)
         {
-            return await _context.EntryItems
-                .Where(e => e.Date >= dateStart && e.Date <= dateEnd)
-                .Skip(startIdx)
-                .Take(count)
-                .ToListAsync();
+            return new EntryRepositoryResult<IEnumerable<Lib.Entry.Entry>>()
+            {
+                Type = EntryRepositoryResultType.Get,
+                Succeded = true,
+                Data = await _context.EntryItems
+                    .Where(e => e.Date >= dateStart && e.Date <= dateEnd)
+                    .Skip(startIdx)
+                    .Take(count)
+                    .ToListAsync()
+            };
         }
 
-        public async Task<Lib.Entry.Entry> GetEntryByDateAsync(DateTime date)
+        public async Task<EntryRepositoryResult<Lib.Entry.Entry>> GetEntryByDateAsync(DateTime date)
         {
-            return await _context.EntryItems.FirstOrDefaultAsync(e => e.Date == date);
+            var entry = await _context.EntryItems.FirstOrDefaultAsync(e => e.Date == date);
+            return new EntryRepositoryResult<Lib.Entry.Entry>()
+            {
+                Type = EntryRepositoryResultType.Get,
+                Succeded = entry != null,
+                Data = entry
+            };
         }
 
-        public async Task<Lib.Entry.Entry> GetByIdAsync(int id)
+        public async Task<EntryRepositoryResult<Lib.Entry.Entry>> GetByIdAsync(int id)
         {
-            return await _context.EntryItems.FirstOrDefaultAsync(e => e.Id == id);
+            var entry = await _context.EntryItems.FirstOrDefaultAsync(e => e.Id == id);
+
+            return new EntryRepositoryResult<Lib.Entry.Entry>()
+            {
+                Type = EntryRepositoryResultType.Get,
+                Succeded = entry != null,
+                Data = entry
+            };
         }
 
-        public async Task<Lib.Entry.Entry> AddOrUpdateEntryAsync(Lib.Entry.Entry entry)
+        public async Task<EntryRepositoryResult<Lib.Entry.Entry>> AddOrUpdateEntryAsync(Lib.Entry.Entry entry)
         {
-            var fromDb = await GetEntryByDateAsync(entry.Date);
+            var fromDb = (await GetEntryByDateAsync(entry.Date)).Data;
             if (fromDb == null)
             {
                 await _context.EntryItems.AddAsync(entry);
                 await _context.SaveChangesAsync();
                 size++;
-                return entry;
+                return new EntryRepositoryResult<Lib.Entry.Entry>()
+                {
+                    Type = EntryRepositoryResultType.Add,
+                    Succeded = true,
+                    Data = entry
+                };
             }
             fromDb.UpdateFrom(entry);
             await _context.SaveChangesAsync();
-            return fromDb;
+            return new EntryRepositoryResult<Lib.Entry.Entry>()
+            {
+                Type = EntryRepositoryResultType.Update,
+                Succeded = true,
+                Data = fromDb
+            };
         }
 
-        public async Task<bool> UpdateEntryAsync(int id, Lib.Entry.Entry entry)
+        public async Task<EntryRepositoryResult<Lib.Entry.Entry>> UpdateEntryAsync(int id, Lib.Entry.Entry entry)
         {
             var fromDb = await _context.EntryItems.FirstOrDefaultAsync(e => e.Id == id);
             if (fromDb == null)
             {
-                return false;
+                return new EntryRepositoryResult<Lib.Entry.Entry>()
+                {
+                    Type = EntryRepositoryResultType.Update,
+                    Succeded = false,
+                    Data = null
+                };
             }
             fromDb.UpdateFrom(entry);
             await _context.SaveChangesAsync();
-            return true;
+            return new EntryRepositoryResult<Lib.Entry.Entry>()
+            {
+                Type = EntryRepositoryResultType.Update,
+                Succeded = true,
+                Data = fromDb
+            };
         }
 
-        public async Task<bool> DeleteEntryAsync(int id)
+        public async Task<EntryRepositoryResult<Lib.Entry.Entry>> DeleteEntryAsync(int id)
         {
             var fromDb = await _context.EntryItems.FirstOrDefaultAsync(e => e.Id == id);
             if (fromDb == null)
             {
-                return false;
+                return new EntryRepositoryResult<Lib.Entry.Entry>()
+                {
+                    Type = EntryRepositoryResultType.Delete,
+                    Succeded = false,
+                    Data = null
+                };
             }
             _context.Remove(fromDb);
             await _context.SaveChangesAsync();
             size--;
-            return true;
+            return new EntryRepositoryResult<Lib.Entry.Entry>()
+            {
+                Type = EntryRepositoryResultType.Delete,
+                Succeded = true,
+                Data = fromDb
+            };
         }
     }
 }

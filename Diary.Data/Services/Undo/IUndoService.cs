@@ -5,7 +5,7 @@ namespace Diary.Data.Services.Undo
 {
     public interface IUndoService
     {
-        void Add();
+        void Add(UndoAction action);
         void Undo();
         void Undo(int times);
 
