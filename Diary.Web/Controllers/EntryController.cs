@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Diary.Data.Services.Entry;
 using Diary.Lib.Entry;
+using Diary.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diary.Web.Controllers
@@ -39,24 +40,27 @@ namespace Diary.Web.Controllers
         }
 
         [HttpGet("by-date")]
-        public async Task<ActionResult<IEnumerable<Entry>>> GetEntriesByDate([FromBody] DateTime startDate,
-            [FromBody] DateTime endDate)
+        public async Task<ActionResult<IEnumerable<Entry>>> GetEntriesByDate(
+            [FromBody] DateRangeViewModel dateRangeViewModel)
         {
-            return Ok(await _service.GetEntriesByDateBetweenAsync(startDate, endDate, PageSize));
+            return Ok(await _service.GetEntriesByDateBetweenAsync(
+                dateRangeViewModel.DateStart, dateRangeViewModel.DateEnd, PageSize));
         }
 
         [HttpGet("next-by_date")]
-        public async Task<ActionResult<IEnumerable<Entry>>> GetNextEntriesByDate([FromBody] DateTime startDate,
-            [FromBody] DateTime endDate)
+        public async Task<ActionResult<IEnumerable<Entry>>> GetNextEntriesByDate(
+            [FromBody] DateRangeViewModel dateRangeViewModel)
         {
-            return Ok(await _service.GetNextEntriesByDateBetweenAsync(startDate, endDate, PageSize));
+            return Ok(await _service.GetNextEntriesByDateBetweenAsync(
+                dateRangeViewModel.DateStart, dateRangeViewModel.DateEnd, PageSize));
         }
         
         [HttpGet("previous-by_date")]
-        public async Task<ActionResult<IEnumerable<Entry>>> GetPreviousEntriesByDate([FromBody] DateTime startDate,
-            [FromBody] DateTime endDate)
+        public async Task<ActionResult<IEnumerable<Entry>>> GetPreviousEntriesByDate(
+            [FromBody] DateRangeViewModel dateRangeViewModel)
         {
-            return Ok(await _service.GetPreviousEntriesByDateBetweenAsync(startDate, endDate, PageSize));
+            return Ok(await _service.GetPreviousEntriesByDateBetweenAsync(
+                dateRangeViewModel.DateStart, dateRangeViewModel.DateEnd, PageSize));
         }
         
         [HttpGet("one-by-date")]

@@ -1,6 +1,7 @@
 using Diary.Data.Context;
 using Diary.Data.Repositories.Entry;
 using Diary.Data.Services.Entry;
+using Diary.Data.Services.Undo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,8 +34,9 @@ namespace Diary.Web
                     x => x.MigrationsAssembly("Diary.Web")));
             
             
-            // services.AddScoped<IEntryRepository, EntryRepository>();
-            // services.AddScoped<IEntryService, EntryService>();
+            services.AddScoped<IEntryRepository, EntryRepository>();
+            services.AddScoped<IEntryService, EntryService>();
+            services.AddScoped<IUndoService, UndoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

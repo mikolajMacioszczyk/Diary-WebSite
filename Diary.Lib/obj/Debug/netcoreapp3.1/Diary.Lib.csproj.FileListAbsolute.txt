@@ -7,3 +7,12 @@ C:\Projects\C#\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.Assembl
 C:\Projects\C#\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.csproj.CoreCompileInputs.cache
 C:\Projects\C#\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.dll
 C:\Projects\C#\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.pdb
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\bin\Debug\netcoreapp3.1\Diary.Lib.deps.json
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\bin\Debug\netcoreapp3.1\Diary.Lib.dll
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\bin\Debug\netcoreapp3.1\Diary.Lib.pdb
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.csprojAssemblyReference.cache
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.AssemblyInfoInputs.cache
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.AssemblyInfo.cs
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.csproj.CoreCompileInputs.cache
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.dll
+C:\Projects\CSHARP\Diary-WebSite\Diary.Lib\obj\Debug\netcoreapp3.1\Diary.Lib.pdb
