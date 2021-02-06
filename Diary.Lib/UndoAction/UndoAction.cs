@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Diary.Lib.UndoAction
 {
-    public interface IUndoAction
+    public class UndoAction
     {
         [Key]
         public int Id { get; set; }
 
-        public UndoActionType UndoActionType { get; }
         public Entry.Entry Changed { get; set; }
+
+        public virtual UndoActionType GetUndoActionType { get; set; }
     }
 }

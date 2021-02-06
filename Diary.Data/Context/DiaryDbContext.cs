@@ -10,6 +10,6 @@ namespace Diary.Data.Context
         public DiaryDbContext(DbContextOptions<DiaryDbContext> options) : base(options)
         {}
         public DbSet<Entry> EntryItems { get; set; }
-        public DbSet<IUndoAction> UndoActionItems { get; set; }
+        public DbSet<UndoAction> UndoActionItems { get; set; }
     }
 }

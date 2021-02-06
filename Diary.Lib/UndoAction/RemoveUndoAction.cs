@@ -3,12 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Diary.Lib.UndoAction
 {
-    public class RemoveUndoAction : IUndoAction
+    public class RemoveUndoAction : UndoAction
     {
-        [Key]
-        public int Id { get; set; }
-        public UndoActionType UndoActionType { get; } = UndoActionType.RemoveUndoActionType;
-        [NotNull]
-        public Entry.Entry Changed { get; set; }
+        public override UndoActionType GetUndoActionType => UndoActionType.RemoveUndoActionType;
     }
 }

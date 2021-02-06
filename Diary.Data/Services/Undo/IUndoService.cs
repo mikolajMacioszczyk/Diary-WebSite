@@ -9,6 +9,6 @@ namespace Diary.Data.Services.Undo
         void Undo();
         void Undo(int times);
 
-        IEnumerable<IUndoAction> GetUndoActionsAsync(int count);
+        IEnumerable<UndoAction> GetUndoActionsAsync(int count);
     }
 }

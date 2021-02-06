@@ -9,12 +9,12 @@ namespace Diary.Data.Services.Undo
     public class UndoService : IUndoService
     {
         private readonly IEntryRepository _entryRepository;
-        private LinkedList<IUndoAction> _undoStack;
+        private LinkedList<UndoAction> _undoStack;
         
         public UndoService(IEntryRepository entryRepository)
         {
             _entryRepository = entryRepository;
-            _undoStack = new LinkedList<IUndoAction>();
+            _undoStack = new LinkedList<UndoAction>();
         }
 
         public void Add()
@@ -22,12 +22,12 @@ namespace Diary.Data.Services.Undo
             throw new System.NotImplementedException();
         }
 
-        private void ServeRemoveUndoAction(IUndoAction undo)
+        private void ServeRemoveUndoAction(UndoAction undo)
         {
             _entryRepository.AddOrUpdateEntryAsync(undo.Changed);
         }
 
-        private async void ServeUpdateUndoAction(IUndoAction undo)
+        private async void ServeUpdateUndoAction(UndoAction undo)
         {
             if (!await _entryRepository.UpdateEntryAsync(undo.Changed.Id, undo.Changed))
             {
@@ -35,7 +35,7 @@ namespace Diary.Data.Services.Undo
             }
         }
 
-        private void ServeAddUndoAction(IUndoAction undo)
+        private void ServeAddUndoAction(UndoAction undo)
         {
             
         }
@@ -46,7 +46,7 @@ namespace Diary.Data.Services.Undo
             {
                 var undo = _undoStack.First.Value;
                 _undoStack.RemoveFirst();
-                switch (undo.UndoActionType)
+                switch (undo.GetUndoActionType)
                 {
                     case UndoActionType.RemoveUndoActionType:
                         ServeRemoveUndoAction(undo);
@@ -71,7 +71,7 @@ namespace Diary.Data.Services.Undo
             }
         }
 
-        public IEnumerable<IUndoAction> GetUndoActionsAsync(int count)
+        public IEnumerable<UndoAction> GetUndoActionsAsync(int count)
         {
             return _undoStack.Take(count).ToList();
         }
